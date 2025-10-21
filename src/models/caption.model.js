@@ -10,6 +10,14 @@ const captionSchema = new mongoose.Schema({
     required: true,
     unique: true
   },
+  imageUrl: {
+    type: String,
+    required: false
+  },
+  imagekitFileId: {
+    type: String,
+    required: false
+  },
   createdAt: {
     type: Date,
     default: Date.now
