@@ -4,19 +4,25 @@ const cookieParser = require("cookie-parser");
 
 const app = express();
 
-// CORS configuration - Allow requests from frontend
-const corsOptions = {
-  origin: [
-    'http://localhost:3001',           // Local development
-    'http://localhost:3000',           // Local testing
-    'https://your-frontend-url.vercel.app', // Production frontend URL (update this)
-  ],
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+// More permissive CORS configuration
+app.use(cors({
+  origin: '*',  // Allow all origins (for development)
+  credentials: false,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
   allowedHeaders: ['Content-Type', 'Authorization']
-};
+}));
 
-app.use(cors(corsOptions));
+// Alternative: For production, use specific origins
+// app.use(cors({
+//   origin: [
+//     'http://localhost:3001',
+//     'https://your-frontend-url.vercel.app'
+//   ],
+//   credentials: true,
+//   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+//   allowedHeaders: ['Content-Type', 'Authorization']
+// }));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
