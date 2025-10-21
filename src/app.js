@@ -1,23 +1,37 @@
 const express = require("express");
-const authRoutes = require("./routes/auth.routes");
-const cookieParser = require("cookie-parser");
-const postRoutes = require("./routes/post.routes");
-const predictionRoutes = require("./routes/prediction.routes");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 
 const app = express();
 
-// Add CORS support
-app.use(cors());
+// CORS configuration - Allow requests from frontend
+const corsOptions = {
+  origin: [
+    'http://localhost:3001',           // Local development
+    'http://localhost:3000',           // Local testing
+    'https://your-frontend-url.vercel.app', // Production frontend URL (update this)
+  ],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+
+// Import routes
+const authRoutes = require("./routes/auth.routes");
+const postRoutes = require("./routes/post.routes");
+const predictionRoutes = require("./routes/prediction.routes");
 
 // Register routes
 app.use("/api/auth", authRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/predict", predictionRoutes);
 
-// Add a test endpoint to verify backend is working
+// Health check endpoint
 app.get("/test", (req, res) => {
   res.json({ message: "Backend is working!" });
 });
