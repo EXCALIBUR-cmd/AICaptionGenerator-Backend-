@@ -6,19 +6,21 @@ const imagekit = new ImageKit({
   urlEndpoint: process.env.IMAGEKIT_URL_ENDPOINT
 });
 
-const uploadImage = async (file) => {
+const uploadFile = async (fileBuffer, fileName) => {
   try {
-    if (!file) {
-      throw new Error('No file provided');
+    if (!fileBuffer) {
+      throw new Error('No file buffer provided');
     }
 
+    console.log('Uploading file to ImageKit:', fileName);
+    
     const result = await imagekit.upload({
-      file: file.buffer, // Multer buffer
-      fileName: file.originalname,
-      folder: '/captions' // Optional: organize in folder
+      file: fileBuffer,
+      fileName: fileName,
+      folder: '/uploads'
     });
 
-    console.log('Image uploaded to ImageKit:', result.url);
+    console.log('✅ File uploaded successfully:', result.url);
     
     return {
       url: result.url,
@@ -26,9 +28,12 @@ const uploadImage = async (file) => {
       name: result.name
     };
   } catch (error) {
-    console.error('ImageKit upload error:', error);
+    console.error('❌ ImageKit upload error:', error.message);
     throw error;
   }
 };
 
-module.exports = { imagekit, uploadImage };
+module.exports = { 
+  imagekit, 
+  uploadFile  // Make sure this is exported
+};
