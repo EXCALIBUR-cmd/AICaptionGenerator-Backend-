@@ -4,42 +4,40 @@ const cookieParser = require("cookie-parser");
 
 const app = express();
 
-// More permissive CORS configuration
-app.use(cors({
-  origin: '*',  // Allow all origins (for development)
-  credentials: false,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-}));
-
-// Alternative: For production, use specific origins
-// app.use(cors({
-//   origin: [
-//     'http://localhost:3001',
-//     'https://your-frontend-url.vercel.app'
-//   ],
-//   credentials: true,
-//   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-//   allowedHeaders: ['Content-Type', 'Authorization']
-// }));
-
+app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // Import routes
+const predictionRoutes = require("./routes/prediction.routes");
 const authRoutes = require("./routes/auth.routes");
 const postRoutes = require("./routes/post.routes");
-const predictionRoutes = require("./routes/prediction.routes");
 
-// Register routes
-app.use("/api/auth", authRoutes);
-app.use("/api/posts", postRoutes);
-app.use("/predict", predictionRoutes);
+// Root endpoint
+app.get("/", (req, res) => {
+  res.json({ 
+    message: "Image Caption Generator API is running!",
+    version: "1.0.0",
+    endpoints: {
+      health: "/test",
+      predict: "POST /predict"
+    }
+  });
+});
 
-// Health check endpoint
+// Health check
 app.get("/test", (req, res) => {
   res.json({ message: "Backend is working!" });
+});
+
+// Register routes
+app.use("/predict", predictionRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/posts", postRoutes);
+
+// 404 handler
+app.use((req, res) => {
+  res.status(404).json({ message: "Route not found" });
 });
 
 module.exports = app;
