@@ -6,13 +6,9 @@ const app = express();
 // ✅ Allow your Netlify domain
 app.use(cors({
   origin: [
-    'http://localhost:3001',
-    'http://localhost:3000',
-    'https://69005bd9b79a841520cb1061--peaceful-semolina-e0d6c3.netlify.app/',
+    'https://69005bd9b79a841520cb1061--peaceful-semolina-e0d6c3.netlify.app',
   ],
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  credentials: true
 }));
 
 app.use(express.json());
