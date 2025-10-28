@@ -4,13 +4,12 @@ const cookieParser = require("cookie-parser");
 
 const app = express();
 
-// ✅ Add this FIRST - before all other middleware
+// ✅ Configure CORS with your Netlify domain
 app.use(cors({
   origin: [
     'http://localhost:3001',
     'http://localhost:3000',
-    'https://peaceful-semolina-e0d6c3.netlify.app/', 
-    'https://aicaptiongenerator-backend-duoy.onrender.com'
+    'https://69805bd--.peaceful-semolina-e0d6c3.netlify.app',  // Your exact Netlify URL
   ],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
