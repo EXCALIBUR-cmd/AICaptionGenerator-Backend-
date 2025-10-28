@@ -6,10 +6,15 @@ const app = express();
 
 // ✅ Add this FIRST - before all other middleware
 app.use(cors({
-  origin: '*',
+  origin: [
+    'http://localhost:3001',
+    'http://localhost:3000',
+    'https://peaceful-semolina-e0d6c3.netlify.app/', 
+    'https://aicaptiongenerator-backend-duoy.onrender.com'
+  ],
+  credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: false
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 app.use(express.json());
