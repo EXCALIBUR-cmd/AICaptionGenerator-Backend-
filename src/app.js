@@ -1,13 +1,20 @@
 const express = require("express");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 
 const app = express();
 
-// Allow all origins for now
-app.use(cors());
+// ✅ Add this FIRST - before all other middleware
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: false
+}));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 // ✅ ROOT ROUTE - Must be BEFORE other routes
 app.get("/", (req, res) => {
