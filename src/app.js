@@ -1,15 +1,14 @@
 const express = require("express");
 const cors = require("cors");
-const cookieParser = require("cookie-parser");
 
 const app = express();
 
-// ✅ Configure CORS with your Netlify domain
+// ✅ Allow your Netlify domain
 app.use(cors({
   origin: [
     'http://localhost:3001',
     'http://localhost:3000',
-    'https://69805bd--.peaceful-semolina-e0d6c3.netlify.app',  // Your exact Netlify URL
+    'https://69005bd9b79a841520cb1061--peaceful-semolina-e0d6c3.netlify.app/',
   ],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
@@ -18,7 +17,6 @@ app.use(cors({
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
 
 // ✅ ROOT ROUTE - Must be BEFORE other routes
 app.get("/", (req, res) => {
